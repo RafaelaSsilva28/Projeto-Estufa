@@ -1,0 +1,3 @@
+//INTEGRAÇÃO DE SENSORES RFID E LCD
+//Acesso NEGADO ou Acesso PERMITIDO será transmitido pelo LCD - DEPENDENTE DO RFID
+

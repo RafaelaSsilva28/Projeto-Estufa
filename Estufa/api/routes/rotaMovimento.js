@@ -1,0 +1,2 @@
+//INTEGRAÇÃO DE PIR PARA DECTAR MOVIMENTAÇÃO 
+//Será mostrado no FRONTEND
