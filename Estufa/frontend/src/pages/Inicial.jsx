@@ -1,324 +1,241 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { LuServer, LuExternalLink } from "react-icons/lu";
+import {
+  GiGreenhouse,
+  GiPlantRoots
+} from "react-icons/gi";
+
+import {
+  LuCloudRain,
+  LuThermometer,
+  LuDroplets,
+  LuExternalLink
+} from "react-icons/lu";
 
 export default function Inicial() {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [pagina, setPagina] = useState(1);
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-green-100 via-emerald-50 to-green-200 font-sans text-gray-800">
 
-    const alternarPagina = () => {
-        setPagina((paginaAtual) => (paginaAtual === 1 ? 2 : 1));
-    };
+      {/* CABEÇALHO */}
+      <header className="max-w-6xl mx-auto px-6 pt-10 pb-8">
 
-    return (
-        <div className="min-h-screen bg-linear-to-br from-blue-300 via-indigo-300 to-violet-300 text-white font-sans selection:bg-violet-200 selection:text-indigo-900 flex flex-col">
+        <div className="flex items-center gap-3 mb-10">
 
-            <div className="flex-1 flex flex-col justify-center">
+          <div className="w-12 h-12 bg-green-700 rounded-xl flex items-center justify-center shadow-md">
+            <GiGreenhouse className="text-white text-3xl" />
+          </div>
 
-                <header className="max-w-5xl mx-auto px-6 pt-12 pb-10 text-center flex flex-col items-center justify-center gap-4">
+          <div>
+            <h2 className="font-bold text-xl text-green-900">
+              Projeto Estufa
+            </h2>
 
-                    <h1 className="text-4xl md:text-6xl font-black tracking-tight max-w-3xl leading-tight mt-2 text-white drop-shadow-md [text-shadow:0_4px_12px_rgba(59,130,246,0.8)]">
+            <p className="text-sm text-green-700">
+              Sistema de monitoramento
+            </p>
+          </div>
 
-                        Bem-vinda ao Espaço do Projeto{" "}
+        </div>
 
-                        <span className="underline decoration-blue-100 underline-offset-8 text-purple-200">
-                            WebControle
-                        </span>
 
-                    </h1>
+        {/* APRESENTAÇÃO */}
+        <div className="grid md:grid-cols-2 gap-10 items-center">
 
+          <div>
 
-                    <p className="text-blue-50 text-base md:text-lg max-w-2xl leading-relaxed font-light mt-2">
+            <p className="text-green-700 font-semibold mb-2">
+              ESTUFA INTELIGENTE
+            </p>
 
-                        Um ambiente de estudos do projeto WebControle.
-                        Aqui você pode navegar pelos conceitos integrados de
-                        controle web IoT.
+            <h1 className="text-4xl md:text-5xl font-bold text-green-950 leading-tight">
+              Monitoramento e controle de uma estufa
+            </h1>
 
-                    </p>
+            <p className="mt-5 text-gray-600 text-lg leading-relaxed max-w-xl">
+              Projeto desenvolvido para acompanhar as condições da estufa
+              utilizando sensores conectados ao ESP32. Os dados são enviados
+              por MQTT e podem ser acompanhados através desta aplicação web.
+            </p>
 
 
-                    {/* ACESSO À API */}
+            <div className="flex flex-wrap gap-3 mt-7">
 
-                    <a
-                        href="https://webcontroleapi.vercel.app/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-5 group flex items-center gap-4 bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/30 px-6 py-4 rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-                    >
+              <button
+                onClick={() => navigate("/telaUmid")}
+                className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-xl font-semibold transition cursor-pointer shadow-md"
+              >
+                Ver monitoramento
+              </button>
 
-                        <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
 
-                            <LuServer className="text-3xl text-white" />
-
-                        </div>
-
-
-                        <div className="text-left">
-
-                            <p className="text-xs text-blue-100 font-medium">
-                                Backend do projeto
-                            </p>
-
-                            <p className="text-lg font-bold text-white">
-                                Acessar API WebControle
-                            </p>
-
-                        </div>
-
-
-                        <LuExternalLink className="text-2xl text-blue-100 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-
-                    </a>
-
-                </header>
-
-
-                <main className="max-w-7xl mx-auto px-6 pb-12 w-full">
-
-                    <div className="text-center mb-10">
-
-                        <h2 className="text-2xl font-bold tracking-tight text-white [text-shadow:0_4px_12px_rgba(59,130,246,0.8)]">
-                            Selecione o módulo para continuar
-                        </h2>
-
-                        <p className="text-blue-50/80 text-sm mt-1 font-light">
-                            Clique em um dos blocos abaixo para abrir o conteúdo
-                            da aula correspondente.
-                        </p>
-
-                    </div>
-
-
-                    <div className="flex items-center justify-between gap-4 w-full">
-
-                        {/* SETA ESQUERDA */}
-
-                        <button
-                            type="button"
-                            onClick={alternarPagina}
-                            className="bg-indigo-500/30 hover:bg-indigo-500/50 p-3 rounded-full border border-white/30 transition-all cursor-pointer shadow-lg active:scale-95 text-white shrink-0 backdrop-blur-md"
-                            aria-label="Ver aulas anteriores"
-                        >
-
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={2.5}
-                                stroke="currentColor"
-                                className="w-6 h-6"
-                            >
-
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M15.75 19.5L8.25 12l7.5-7.5"
-                                />
-
-                            </svg>
-
-                        </button>
-
-
-                        <div className="flex-1 max-w-6xl">
-
-                            {pagina === 1 ? (
-
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-
-                                    {/* AULA 01 */}
-
-                                    <div
-                                        onClick={() => navigate("/telaLed")}
-                                        className="bg-linear-to-br from-blue-500 via-indigo-500 to-violet-500 p-8 rounded-2xl shadow-xl border border-white/20 hover:scale-[1.03] hover:shadow-2xl transition-all duration-300 flex flex-col gap-3 cursor-pointer group text-white"
-                                    >
-
-                                        <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white font-bold group-hover:bg-white/30 transition-colors">
-                                            01
-                                        </div>
-
-                                        <h3 className="text-xl font-bold">
-                                            Aula 01: Controle de LED
-                                        </h3>
-
-                                        <p className="text-blue-50 text-sm leading-relaxed font-light">
-
-                                            Controle de um LED utilizando ESP32 e
-                                            comunicação MQTT, permitindo ligar e
-                                            desligar o componente remotamente através
-                                            de uma interface web.
-
-                                        </p>
-
-                                    </div>
-
-
-                                    {/* AULA 02 */}
-
-                                    <div
-                                        onClick={() => navigate("/telaNivel")}
-                                        className="bg-linear-to-br from-blue-500 via-indigo-500 to-violet-500 p-8 rounded-2xl shadow-xl border border-white/20 hover:scale-[1.03] hover:shadow-2xl transition-all duration-300 flex flex-col gap-3 cursor-pointer group text-white"
-                                    >
-
-                                        <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white font-bold group-hover:bg-white/30 transition-colors">
-                                            02
-                                        </div>
-
-                                        <h3 className="text-xl font-bold">
-                                            Aula 02: Nível de Água
-                                        </h3>
-
-                                        <p className="text-blue-50 text-sm leading-relaxed font-light">
-
-                                            Monitoramento do nível de água utilizando
-                                            ESP32 e comunicação MQTT através de uma
-                                            interface web.
-
-                                        </p>
-
-                                    </div>
-
-
-                                    {/* AULA 03 */}
-
-                                    <div
-                                        onClick={() => navigate("/telaUmid")}
-                                        className="bg-linear-to-br from-blue-500 via-indigo-500 to-violet-500 p-8 rounded-2xl shadow-xl border border-white/20 hover:scale-[1.03] hover:shadow-2xl transition-all duration-300 flex flex-col gap-3 cursor-pointer group text-white"
-                                    >
-
-                                        <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white font-bold group-hover:bg-white/30 transition-colors">
-                                            03
-                                        </div>
-
-                                        <h3 className="text-xl font-bold">
-                                            Aula 03: Umidade do Solo
-                                        </h3>
-
-                                        <p className="text-blue-50 text-sm leading-relaxed font-light">
-
-                                            Monitoramento da umidade do solo utilizando
-                                            ESP32, sensor analógico e comunicação MQTT
-                                            através de uma interface web.
-
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-                            ) : (
-
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-
-                                    {/* AULA 04 */}
-
-                                    <div
-                                        onClick={() => navigate("/telaChuva")}
-                                        className="bg-linear-to-br from-blue-500 via-indigo-500 to-violet-500 p-8 rounded-2xl shadow-xl border border-white/20 hover:scale-[1.03] hover:shadow-2xl transition-all duration-300 flex flex-col gap-3 cursor-pointer group text-white"
-                                    >
-
-                                        <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white font-bold group-hover:bg-white/30 transition-colors">
-                                            04
-                                        </div>
-
-                                        <h3 className="text-xl font-bold">
-                                            Aula 04: Radar Chuva
-                                        </h3>
-
-                                        <p className="text-blue-50 text-sm leading-relaxed font-light">
-
-                                            Monitoramento do nível da chuva utilizando
-                                            ESP32, sensor de chuva e comunicação MQTT,
-                                            com acionamento do servo motor para controle
-                                            do teto retrátil.
-
-                                        </p>
-
-                                    </div>
-
-                                </div>
-
-                            )}
-
-                        </div>
-
-
-                        {/* SETA DIREITA */}
-
-                        <button
-                            type="button"
-                            onClick={alternarPagina}
-                            className="bg-indigo-500/30 hover:bg-indigo-500/50 p-3 rounded-full border border-white/30 transition-all cursor-pointer shadow-lg active:scale-95 text-white shrink-0 backdrop-blur-md"
-                            aria-label="Ver próximas aulas"
-                        >
-
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={2.5}
-                                stroke="currentColor"
-                                className="w-6 h-6"
-                            >
-
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                                />
-
-                            </svg>
-
-                        </button>
-
-                    </div>
-
-
-                    {/* INDICADORES */}
-
-                    <div className="flex items-center justify-center gap-2 mt-8">
-
-                        <button
-                            type="button"
-                            onClick={() => setPagina(1)}
-                            aria-label="Abrir primeira página"
-                            className={`h-2 rounded-full transition-all duration-300 ${
-                                pagina === 1
-                                    ? "w-6 bg-indigo-600"
-                                    : "w-2 bg-white/40"
-                            }`}
-                        ></button>
-
-
-                        <button
-                            type="button"
-                            onClick={() => setPagina(2)}
-                            aria-label="Abrir segunda página"
-                            className={`h-2 rounded-full transition-all duration-300 ${
-                                pagina === 2
-                                    ? "w-6 bg-indigo-600"
-                                    : "w-2 bg-white/40"
-                            }`}
-                        ></button>
-
-                    </div>
-
-                </main>
+              <a
+                href="https://webcontroleapi.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-white border border-green-300 text-green-800 px-6 py-3 rounded-xl font-semibold hover:bg-green-50 transition shadow-sm"
+              >
+                Acessar API
+                <LuExternalLink />
+              </a>
 
             </div>
 
+          </div>
 
-            <footer className="text-center py-6 px-4 text-sm text-blue-50/80 border-t border-white/20">
 
-                Disciplina de Front-end integrada
+          {/* REPRESENTAÇÃO DA ESTUFA */}
+          <div className="bg-white/70 border border-green-200 rounded-3xl p-10 shadow-lg flex flex-col items-center justify-center min-h-80">
 
-            </footer>
+            <GiGreenhouse className="text-[130px] text-green-700" />
+
+            <p className="mt-5 font-semibold text-green-900">
+              Estufa automatizada
+            </p>
+
+            <p className="text-sm text-gray-500 text-center mt-2">
+              Sensores e atuadores integrados ao ESP32
+            </p>
+
+          </div>
 
         </div>
-    );
+
+      </header>
+
+
+      {/* MÓDULOS */}
+      <main className="max-w-6xl mx-auto px-6 py-12">
+
+        <div className="mb-7">
+
+          <h2 className="text-2xl font-bold text-green-950">
+            Monitoramento da estufa
+          </h2>
+
+          <p className="text-gray-600 mt-1">
+            Selecione uma opção para visualizar os dados.
+          </p>
+
+        </div>
+
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+
+          {/* UMIDADE */}
+          <div
+            onClick={() => navigate("/telaUmid")}
+            className="bg-white rounded-2xl p-6 shadow-md border border-green-100 hover:-translate-y-1 hover:shadow-lg transition cursor-pointer"
+          >
+
+            <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-5">
+              <GiPlantRoots className="text-2xl text-green-700" />
+            </div>
+
+            <h3 className="font-bold text-lg text-green-950">
+              Umidade do solo
+            </h3>
+
+            <p className="text-gray-500 text-sm mt-2">
+              Acompanhe o nível de umidade do solo da estufa.
+            </p>
+
+          </div>
+
+
+          {/* CHUVA */}
+          <div
+            onClick={() => navigate("/telaChuva")}
+            className="bg-white rounded-2xl p-6 shadow-md border border-green-100 hover:-translate-y-1 hover:shadow-lg transition cursor-pointer"
+          >
+
+            <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-5">
+              <LuCloudRain className="text-2xl text-blue-700" />
+            </div>
+
+            <h3 className="font-bold text-lg text-green-950">
+              Sensor de chuva
+            </h3>
+
+            <p className="text-gray-500 text-sm mt-2">
+              Detecta a presença de chuva e auxilia no controle do teto.
+            </p>
+
+          </div>
+
+
+          {/* UMIDADE DO AR */}
+          <div
+            className="bg-white rounded-2xl p-6 shadow-md border border-green-100 hover:-translate-y-1 hover:shadow-lg transition cursor-pointer"
+          >
+
+            <div className="w-12 h-12 rounded-xl bg-cyan-100 flex items-center justify-center mb-5">
+              <LuDroplets className="text-2xl text-cyan-700" />
+            </div>
+
+            <h3 className="font-bold text-lg text-green-950">
+              Umidade do ar
+            </h3>
+
+            <p className="text-gray-500 text-sm mt-2">
+              Leitura da umidade presente no ambiente interno da estufa.
+            </p>
+
+          </div>
+
+
+          {/* TEMPERATURA */}
+          <div
+            className="bg-white rounded-2xl p-6 shadow-md border border-green-100 hover:-translate-y-1 hover:shadow-lg transition cursor-pointer"
+          >
+
+            <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center mb-5">
+              <LuThermometer className="text-2xl text-orange-700" />
+            </div>
+
+            <h3 className="font-bold text-lg text-green-950">
+              Temperatura
+            </h3>
+
+            <p className="text-gray-500 text-sm mt-2">
+              Consulte a temperatura do ambiente monitorado.
+            </p>
+
+          </div>
+
+        </div>
+
+      </main>
+
+
+      {/* SOBRE O PROJETO */}
+      <section className="max-w-6xl mx-auto px-6 pb-14">
+
+        <div className="bg-green-800 text-white rounded-3xl p-8 md:p-10 shadow-lg">
+
+          <h2 className="text-2xl font-bold">
+            Sobre o projeto
+          </h2>
+
+          <p className="mt-4 text-green-50 leading-relaxed max-w-4xl">
+            A estufa utiliza um ESP32 conectado a sensores responsáveis
+            por coletar informações do ambiente. A comunicação MQTT permite
+            que esses dados sejam enviados para a API e apresentados no
+            sistema web, facilitando o acompanhamento das condições da estufa.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <footer className="border-t border-green-300 text-center py-5 text-sm text-green-800">
+        Projeto Estufa • SENAI
+      </footer>
+
+    </div>
+  );
 }

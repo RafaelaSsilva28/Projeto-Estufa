@@ -3,17 +3,20 @@ import cors from 'cors';
 import rotaControleUmidade from './routes/rotaControleUmidade.js';
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-//Rota que busca e retorna a escrita
+// Rota principal da API
 app.get('/', (req, res) => {
-    res.json("API no ar")
-})
+    res.json("API no ar");
+});
 
-app.use('controleUmidade', rotaControleUmidade);
+// Rotas de controle de umidade
+app.use('/controleUmidade', rotaControleUmidade);
 
-const porta = 3001
-app.listen (porta, () => {
-    console.log(`Servidor iniciado http://localhost:${}`)
-})
+const porta = 3001;
+
+app.listen(porta, () => {
+    console.log(`Servidor iniciado em http://localhost:${porta}`);
+});
