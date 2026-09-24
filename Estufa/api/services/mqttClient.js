@@ -6,8 +6,11 @@ import mqtt from "mqtt";
 //TOPICOS DE ROTA DE CONTROLE DE UMIDADE E TEMPERATURA
 const TOPICO_UMIDADE = "aula/27/umidadeAr";
 const TOPICO_TEMPERATURA = "aula/27/temperatura";
-//ROTA DE CONTROLE DE CH  ========== UVA
+//ROTA DE CONTROLE DE CHUVA
+const TOPICO_STATUS_CHUVA = "aula/27/statusChuva";
+const TOPICO_COBERTURA = "aula/27/cobertura";
 //ROTA DE CONTROLE DE MOVIMENTO
+const TOPICO_ESTADO_PIR = "aula/27/presencaPir";
 
 // ========== VARIÁVEIS GLOBAIS ==========
 let mqttClient = null;          // Guarda a conexão MQTT
@@ -42,6 +45,10 @@ function conectarMqtt() {
         const topicos = [
             TOPICO_TEMPERATURA,
             TOPICO_UMIDADE,
+            TOPICO_STATUS_CHUVA,
+            TOPICO_COBERTURA,
+            TOPICO_ESTADO_PIR,
+            
     
         ]
 

@@ -21,6 +21,7 @@ onMessage(TOPICO_UMIDADE, (mensagem) => {
     console.log(`Mensagem Recebida no ${TOPICO_UMIDADE}: ${umidade}`)
 })
 
+
 router.get(`/dadosClima`, async (req, res) => {
     try {
         console.log(`Temperatura: ${temperatura} °C`)

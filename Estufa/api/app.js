@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import rotaControleUmidade from './routes/rotaControleUmidade.js';
+import rotaControleChuva from './routes/rotaControleChuva.js';
+import rotaMovimento from './routes/rotaMovimento.js';
 
 const app = express();
 
@@ -14,6 +16,8 @@ app.get('/', (req, res) => {
 
 // Rotas de controle de umidade
 app.use('/controleUmidade', rotaControleUmidade);
+app.use('/controleChuva', rotaControleChuva);
+app.use('/controleMovimento', rotaMovimento);
 
 const porta = 3001;
 
