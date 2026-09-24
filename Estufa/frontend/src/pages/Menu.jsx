@@ -37,7 +37,7 @@ export default function Menu() {
                     fixed z-[60] inset-y-0 left-0
                     transform md:relative md:translate-x-0
                     w-64
-                    bg-linear-to-b from-green-800 via-green-700 to-emerald-700
+                    bg-linear-to-b from-pink-800 via-pink-700 to-pink-700
                     text-white
                     p-5
                     transition-transform duration-300 ease-in-out
@@ -64,7 +64,7 @@ export default function Menu() {
                                 Estufa
                             </h2>
 
-                            <p className="text-xs text-green-100">
+                            <p className="text-xs text-pink-100">
                                 Monitoramento
                             </p>
 
@@ -143,11 +143,11 @@ export default function Menu() {
 
                     <div className="border-t border-white/20 pt-4">
 
-                        <p className="text-xs text-green-100">
+                        <p className="text-xs text-pink-100">
                             Projeto Estufa
                         </p>
 
-                        <p className="text-xs text-green-200">
+                        <p className="text-xs text-pink-200">
                             ESP32 + MQTT
                         </p>
 
@@ -170,7 +170,7 @@ export default function Menu() {
                         md:hidden
                         fixed top-5 left-4
                         z-50
-                        bg-green-800
+                        bg-pink-800
                         text-white
                         p-2
                         rounded-xl
