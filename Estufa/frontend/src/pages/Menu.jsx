@@ -7,6 +7,7 @@ import Temperatura from "./Temperatura";
 import Umidade from "./Umidade";
 import Chuva from "./Chuva";
 import Movimento from "./Movimento";
+import Historico from "./Historico";
 
 import { MdClose, MdMenu } from "react-icons/md";
 import { HiOutlineHome } from "react-icons/hi2";
@@ -16,6 +17,7 @@ import {
     LuDroplets,
     LuCloudRain,
     LuActivity,
+    LuHistory,
 } from "react-icons/lu";
 import { GiGreenhouse } from "react-icons/gi";
 
@@ -23,7 +25,11 @@ export default function Menu() {
     const [menuAberto, setMenuAberto] = useState(false);
 
     const paginas = [
-        { caminho: "/", nome: "Início", Icone: HiOutlineHome },
+        {
+            caminho: "/",
+            nome: "Início",
+            Icone: HiOutlineHome,
+        },
         {
             caminho: "/painelControle",
             nome: "Painel de Controle",
@@ -49,6 +55,11 @@ export default function Menu() {
             nome: "Movimento",
             Icone: LuActivity,
         },
+        {
+            caminho: "/historico",
+            nome: "Histórico",
+            Icone: LuHistory,
+        },
     ];
 
     return (
@@ -65,14 +76,14 @@ export default function Menu() {
             <aside
                 id="menu-lateral"
                 className={`
-          fixed inset-y-0 left-0 z-[60]
-          flex w-64 shrink-0 flex-col
-          bg-linear-to-b from-pink-800 via-pink-700 to-pink-700
-          p-5 text-white shadow-xl
-          transition-transform duration-300 ease-in-out
-          md:sticky md:top-0 md:h-screen md:translate-x-0
-          ${menuAberto ? "translate-x-0" : "-translate-x-full"}
-        `}
+                    fixed inset-y-0 left-0 z-[60]
+                    flex w-64 shrink-0 flex-col
+                    bg-linear-to-b from-pink-800 via-pink-700 to-pink-700
+                    p-5 text-white shadow-xl
+                    transition-transform duration-300 ease-in-out
+                    md:sticky md:top-0 md:h-screen md:translate-x-0
+                    ${menuAberto ? "translate-x-0" : "-translate-x-full"}
+                `}
             >
                 {/* TÍTULO */}
                 <div className="mb-8 flex items-center justify-between">
@@ -82,7 +93,9 @@ export default function Menu() {
                         </div>
 
                         <div>
-                            <h2 className="text-lg font-bold">Estufa</h2>
+                            <h2 className="text-lg font-bold">
+                                Estufa
+                            </h2>
                             <p className="text-xs text-pink-100">
                                 Monitoramento
                             </p>
@@ -100,7 +113,10 @@ export default function Menu() {
                 </div>
 
                 {/* LINKS DAS PÁGINAS */}
-                <nav className="flex-1 space-y-3 overflow-y-auto">
+                <nav
+                    aria-label="Menu principal"
+                    className="flex-1 space-y-3 overflow-y-auto"
+                >
                     {paginas.map(({ caminho, nome, Icone }) => (
                         <NavLink
                             key={caminho}
@@ -108,13 +124,14 @@ export default function Menu() {
                             end
                             onClick={() => setMenuAberto(false)}
                             className={({ isActive }) => `
-                flex items-center gap-4 rounded-xl p-3
-                transition-colors
-                ${isActive
-                                    ? "bg-white/20 font-semibold"
-                                    : "hover:bg-white/15"
+                                flex items-center gap-4 rounded-xl p-3
+                                transition-colors
+                                ${
+                                    isActive
+                                        ? "bg-white/20 font-semibold"
+                                        : "hover:bg-white/15"
                                 }
-              `}
+                            `}
                         >
                             <Icone className="shrink-0 text-2xl" />
                             <span>{nome}</span>
@@ -148,17 +165,36 @@ export default function Menu() {
 
                 <Routes>
                     <Route path="/" element={<Inicial />} />
+
                     <Route
                         path="/painelControle"
                         element={<PainelControle />}
                     />
+
                     <Route
                         path="/temperatura"
                         element={<Temperatura />}
                     />
-                    <Route path="/umidade" element={<Umidade />} />
-                    <Route path="/chuva" element={<Chuva />} />
-                    <Route path="/movimento" element={<Movimento />} />
+
+                    <Route
+                        path="/umidade"
+                        element={<Umidade />}
+                    />
+
+                    <Route
+                        path="/chuva"
+                        element={<Chuva />}
+                    />
+
+                    <Route
+                        path="/movimento"
+                        element={<Movimento />}
+                    />
+
+                    <Route
+                        path="/historico"
+                        element={<Historico />}
+                    />
                 </Routes>
             </main>
         </div>
