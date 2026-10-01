@@ -1,18 +1,39 @@
-//INTEGRAÇÃO DE SENSORES RFID E LCD
-//Acesso NEGADO ou Acesso PERMITIDO será transmitido pelo LCD - DEPENDENTE DO RFID
+// Recebe e salva a leitura do RFID
 
 import { Router } from "express";
+import { BD } from "../services/banco.js";
 
 const router = Router();
 
-//Variável Global
-let ultimaLeitura = null
+router.post("/leitura", async (req, res) => {
+    const { uid } = req.body ?? {};
 
-//EndPoint para receber a leitura do RFID  -aqui ele aciona o ESP32
-router.post(`/leitura`, async (req, res) => {
-    const { uid } = req.body;
-    if (!uid) return res.status(400).json({ mensagem: `UID não foi informado!` });
-    ultimaLeitura = uid;
-    console.log(`Tag lida: ${uid}`);
-    return res.json({ mensagem: `Cartão capturado com sucesso`, uid });
+    if (typeof uid !== "string" || !uid.trim()) {
+        return res.status(400).json({
+            mensagem: "UID não foi informado!",
+        });
+    }
+
+    try {
+        await BD.query(
+            `INSERT INTO leitor_rfid (nome, codigo_rfid)
+             VALUES ($1, $2)`,
+            ["Cartão RFID", uid.trim()]
+        );
+
+        console.log(`Tag lida: ${uid}`);
+
+        return res.status(201).json({
+            mensagem: "Cartão capturado e salvo com sucesso",
+            uid: uid.trim(),
+        });
+    } catch (error) {
+        console.error("Erro ao salvar RFID:", error.message);
+
+        return res.status(503).json({
+            mensagem: "Não foi possível salvar o cartão.",
+        });
+    }
 });
+
+export default router;
