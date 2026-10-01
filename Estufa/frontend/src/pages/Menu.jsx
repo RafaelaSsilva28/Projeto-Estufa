@@ -8,6 +8,7 @@ import Umidade from "./Umidade";
 import Chuva from "./Chuva";
 import Movimento from "./Movimento";
 import Historico from "./Historico";
+import Graficos from "./Graficos";
 
 import { MdClose, MdMenu } from "react-icons/md";
 import { HiOutlineHome } from "react-icons/hi2";
@@ -18,6 +19,7 @@ import {
     LuCloudRain,
     LuActivity,
     LuHistory,
+    LuChartNoAxesCombined,
 } from "react-icons/lu";
 import { GiGreenhouse } from "react-icons/gi";
 
@@ -59,6 +61,11 @@ export default function Menu() {
             caminho: "/historico",
             nome: "Histórico",
             Icone: LuHistory,
+        },
+        {
+            caminho: "/graficos",
+            nome: "Gráficos",
+            Icone: LuChartNoAxesCombined,
         },
     ];
 
@@ -194,6 +201,11 @@ export default function Menu() {
                     <Route
                         path="/historico"
                         element={<Historico />}
+                    />
+
+                    <Route
+                        path="/graficos"
+                        element={<Graficos />}
                     />
                 </Routes>
             </main>
