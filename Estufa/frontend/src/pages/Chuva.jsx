@@ -73,7 +73,7 @@ export default function Chuva() {
     const status = normalizar(dados?.statusChuva);
     const telhado = normalizar(dados?.estadoTelhado);
 
-    const chovendo = status === "chovendo";
+    const chovendo =["chuvoso", "chovendo"].includes(status);
     const semChuva = status === "sem chuva";
 
     const telhadoAberto = ["aberto", "aberta"].includes(telhado);
