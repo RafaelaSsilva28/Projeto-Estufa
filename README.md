@@ -20,7 +20,6 @@ Essas informações são recebidas pela API e exibidas em uma aplicação web, f
 
 O projeto realiza o monitoramento de:
 
-- 🌱 Umidade do solo
 - 💧 Umidade do ar
 - 🌡️ Temperatura
 - 🌧️ Presença de chuva
