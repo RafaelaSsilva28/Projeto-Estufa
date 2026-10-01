@@ -1,44 +1,32 @@
-//INTEGRAÇÃO DE SENSORES SENSOR DE CHUVA E SERVOR MOTOR
-//Caso o sensor indique CHUVA - ABRIR TETO COM SERVOR MOTOR
-
 import { Router } from "express";
-import { onMessage, TOPICO_STATUS_CHUVA, TOPICO_COBERTURA } from "../services/mqttClient.js";
+import {
+    buscarMensagens,
+    TOPICO_STATUS_CHUVA,
+    TOPICO_COBERTURA,
+} from "../services/mqttClient.js";
 
 const router = Router();
 
-let statusChuva = 'Desconhecida'
-let estadoTelhado = 'Desconhecido'
-
-//Registar a função de escuta dos topicos - STATUS CHUVA
-onMessage(TOPICO_STATUS_CHUVA, (mensagem) => {
-    statusChuva = mensagem;
-    console.log(`Mensagem Recebida no ${TOPICO_STATUS_CHUVA}: ${statusChuva}`)
-})
-
-
-//Registar a função de escuta dos topicos - ESTADO DO TELHADO
-onMessage(TOPICO_COBERTURA, (mensagem) => {
-    estadoTelhado = mensagem;
-    console.log(`Mensagem Recebida no ${TOPICO_COBERTURA}: ${estadoTelhado}`)
-})
-
-//Rota GET
-router.get(`/dadosChuva`, async (req, res) => {
+router.get("/dadosChuva", async (req, res) => {
     try {
-        console.log(`Detecção de Chuva: ${statusChuva}`)
-        console.log(`Estado da Cobertura: ${estadoTelhado}`)
+        const dados = await buscarMensagens([
+            TOPICO_STATUS_CHUVA,
+            TOPICO_COBERTURA,
+        ]);
 
-        return res.status(200).json({
-            statusChuva,
-            estadoTelhado
-        })
+        res.set("Cache-Control", "no-store");
+
+        return res.json({
+            statusChuva: dados[TOPICO_STATUS_CHUVA],
+            estadoTelhado: dados[TOPICO_COBERTURA],
+        });
     } catch (error) {
-        return res.status(500).json({ error: `Erro ao obter dados!` })
+        console.error("Erro ao buscar chuva:", error.message);
+
+        return res.status(503).json({
+            error: "Não foi possível obter os dados de chuva e telhado.",
+        });
     }
 });
-
-
-
-
 
 export default router;

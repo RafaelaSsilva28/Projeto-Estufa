@@ -1,30 +1,24 @@
-//INTEGRAÇÃO DE PIR PARA DECTAR MOVIMENTAÇÃO 
-//Será mostrado no FRONTEND
-
 import { Router } from "express";
-import { onMessage, TOPICO_ESTADO_PIR } from "../services/mqttClient.js";
+import { buscarMensagens, TOPICO_ESTADO_PIR } from "../services/mqttClient.js";
 
 const router = Router();
 
-let presencaDetectada = 'Desconhecida';
-
-//Registar a função de escuta dos topicos - DETECTANDO MOVIMENTAÇÃO
-onMessage(TOPICO_ESTADO_PIR, (mensagem) => {
-    presencaDetectada = mensagem;
-    console.log(`Mensagem Recebida no ${TOPICO_ESTADO_PIR}: ${presencaDetectada}`)
-})
-
-//Rota GET
-router.get(`/movimento`, async (req, res) => {
+router.get("/movimento", async (req, res) => {
     try {
-        console.log(`Movimento Detectado: ${presencaDetectada}`)
-        return res.status(200).json({
-            presencaDetectada
-        })
+        const dados = await buscarMensagens([TOPICO_ESTADO_PIR]);
+
+        res.set("Cache-Control", "no-store");
+
+        return res.json({
+            presencaDetectada: dados[TOPICO_ESTADO_PIR],
+        });
     } catch (error) {
-        return res.status(500).json({ error: `Erro ao obter dados!` })
+        console.error("Erro ao buscar movimento:", error.message);
+
+        return res.status(503).json({
+            error: "Não foi possível obter os dados de movimento.",
+        });
     }
 });
-
 
 export default router;

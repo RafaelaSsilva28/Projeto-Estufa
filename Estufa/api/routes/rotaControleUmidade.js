@@ -1,41 +1,29 @@
-//INTEGRAÇÃO DE SENSORES DHT E LCD
-//Será transmitido no LCD umidade e temperatura - DEPENDENTES DO DHT
-
 import { Router } from "express";
-import { publicar, onMessage, TOPICO_UMIDADE, TOPICO_TEMPERATURA } from "../services/mqttClient.js";
+import {
+    buscarMensagens,
+    TOPICO_UMIDADE,
+    TOPICO_TEMPERATURA,
+} from "../services/mqttClient.js";
 
 const router = Router();
 
-let temperatura = 'Desconhecida'
-let umidade = 'Desconhecida'
-
-//Registar a função de escuta dos topicos - TEMPERATURA
-onMessage(TOPICO_TEMPERATURA, (mensagem) => {
-    temperatura = mensagem;
-    console.log(`Mensagem Recebida no ${TOPICO_TEMPERATURA}: ${temperatura}`)
-})
-
-//Registar a função de escuta dos topicos - UMIDADE
-onMessage(TOPICO_UMIDADE, (mensagem) => {
-    umidade = mensagem;
-    console.log(`Mensagem Recebida no ${TOPICO_UMIDADE}: ${umidade}`)
-})
-
-
-router.get(`/dadosClima`, async (req, res) => {
+router.get("/dadosClima", async (req, res) => {
     try {
-        console.log(`Temperatura: ${temperatura} °C`)
-        console.log(`Umidade: ${umidade}%`)
+        const dados = await buscarMensagens([TOPICO_TEMPERATURA, TOPICO_UMIDADE]);
 
-        return res.status(200).json({
-            temperatura,
-            umidade
-        })
+        res.set("Cache-Control", "no-store");
+
+        return res.json({
+            temperatura: dados[TOPICO_TEMPERATURA],
+            umidade: dados[TOPICO_UMIDADE],
+        });
     } catch (error) {
-        return res.status(500).json({ error: `Erro ao obter dados!` })
+        console.error("Erro ao buscar clima:", error.message);
+
+        return res.status(503).json({
+            error: "Não foi possível obter temperatura e umidade.",
+        });
     }
 });
 
-export default router
-
-
+export default router;
