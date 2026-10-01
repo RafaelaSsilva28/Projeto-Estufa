@@ -1,204 +1,166 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, NavLink } from "react-router-dom";
 import { useState } from "react";
 
 import Inicial from "./Inicial";
 import PainelControle from "./PainelControle";
+import Temperatura from "./Temperatura";
+import Umidade from "./Umidade";
+import Chuva from "./Chuva";
+import Movimento from "./Movimento";
 
 import { MdClose, MdMenu } from "react-icons/md";
 import { HiOutlineHome } from "react-icons/hi2";
-import { LuLayoutDashboard } from "react-icons/lu";
+import {
+    LuLayoutDashboard,
+    LuThermometer,
+    LuDroplets,
+    LuCloudRain,
+    LuActivity,
+} from "react-icons/lu";
 import { GiGreenhouse } from "react-icons/gi";
 
-
 export default function Menu() {
-
     const [menuAberto, setMenuAberto] = useState(false);
 
+    const paginas = [
+        { caminho: "/", nome: "Início", Icone: HiOutlineHome },
+        {
+            caminho: "/painelControle",
+            nome: "Painel de Controle",
+            Icone: LuLayoutDashboard,
+        },
+        {
+            caminho: "/temperatura",
+            nome: "Temperatura",
+            Icone: LuThermometer,
+        },
+        {
+            caminho: "/umidade",
+            nome: "Umidade do ar",
+            Icone: LuDroplets,
+        },
+        {
+            caminho: "/chuva",
+            nome: "Chuva",
+            Icone: LuCloudRain,
+        },
+        {
+            caminho: "/movimento",
+            nome: "Movimento",
+            Icone: LuActivity,
+        },
+    ];
+
     return (
-
         <div className="flex min-h-screen font-sans">
-
             {/* FUNDO ESCURO NO CELULAR */}
-
             {menuAberto && (
-
                 <div
                     onClick={() => setMenuAberto(false)}
-                    className="fixed inset-0 bg-black/40 z-[55] md:hidden"
-                ></div>
-
+                    className="fixed inset-0 z-[55] bg-black/40 md:hidden"
+                />
             )}
 
-
             {/* MENU LATERAL */}
-
-            <div
+            <aside
+                id="menu-lateral"
                 className={`
-                    fixed z-[60] inset-y-0 left-0
-                    transform md:relative md:translate-x-0
-                    w-64
-                    bg-linear-to-b from-pink-800 via-pink-700 to-pink-700
-                    text-white
-                    p-5
-                    transition-transform duration-300 ease-in-out
-                    shadow-xl
-                    ${menuAberto ? "translate-x-0" : "-translate-x-full"}
-                `}
+          fixed inset-y-0 left-0 z-[60]
+          flex w-64 shrink-0 flex-col
+          bg-linear-to-b from-pink-800 via-pink-700 to-pink-700
+          p-5 text-white shadow-xl
+          transition-transform duration-300 ease-in-out
+          md:sticky md:top-0 md:h-screen md:translate-x-0
+          ${menuAberto ? "translate-x-0" : "-translate-x-full"}
+        `}
             >
-
-                {/* TÍTULO DO MENU */}
-
-                <div className="flex justify-between items-center mb-8">
-
+                {/* TÍTULO */}
+                <div className="mb-8 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-
-                        <div className="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center">
-
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15">
                             <GiGreenhouse className="text-2xl" />
-
                         </div>
 
                         <div>
-
-                            <h2 className="font-bold text-lg">
-                                Estufa
-                            </h2>
-
+                            <h2 className="text-lg font-bold">Estufa</h2>
                             <p className="text-xs text-pink-100">
                                 Monitoramento
                             </p>
-
                         </div>
-
                     </div>
-
 
                     <button
+                        type="button"
+                        aria-label="Fechar menu"
                         onClick={() => setMenuAberto(false)}
-                        className="md:hidden hover:bg-white/10 p-1 rounded-lg"
+                        className="rounded-lg p-1 hover:bg-white/10 md:hidden"
                     >
-
-                        <MdClose className="w-6 h-6" />
-
+                        <MdClose className="h-6 w-6" />
                     </button>
-
                 </div>
 
-
-                {/* LINKS */}
-
-                <nav className="space-y-3">
-
-                    {/* HOME */}
-
-                    <Link
-                        onClick={() => setMenuAberto(false)}
-                        to="/"
-                        className="
-                            flex items-center gap-4
-                            hover:bg-white/15
-                            p-3
-                            rounded-xl
-                            transition-colors
-                        "
-                    >
-
-                        <HiOutlineHome className="text-2xl shrink-0" />
-
-                        <span>
-                            Início
-                        </span>
-
-                    </Link>
-
-
-                    {/* PAINEL */}
-
-                    <Link
-                        onClick={() => setMenuAberto(false)}
-                        to="/painelControle"
-                        className="
-                            flex items-center gap-4
-                            hover:bg-white/15
-                            p-3
-                            rounded-xl
-                            transition-colors
-                        "
-                    >
-
-                        <LuLayoutDashboard className="text-2xl shrink-0" />
-
-                        <span>
-                            Painel de Controle
-                        </span>
-
-                    </Link>
-
+                {/* LINKS DAS PÁGINAS */}
+                <nav className="flex-1 space-y-3 overflow-y-auto">
+                    {paginas.map(({ caminho, nome, Icone }) => (
+                        <NavLink
+                            key={caminho}
+                            to={caminho}
+                            end
+                            onClick={() => setMenuAberto(false)}
+                            className={({ isActive }) => `
+                flex items-center gap-4 rounded-xl p-3
+                transition-colors
+                ${isActive
+                                    ? "bg-white/20 font-semibold"
+                                    : "hover:bg-white/15"
+                                }
+              `}
+                        >
+                            <Icone className="shrink-0 text-2xl" />
+                            <span>{nome}</span>
+                        </NavLink>
+                    ))}
                 </nav>
 
-
-                {/* TEXTO NO FINAL */}
-
-                <div className="absolute bottom-5 left-5 right-5">
-
-                    <div className="border-t border-white/20 pt-4">
-
-                        <p className="text-xs text-pink-100">
-                            Projeto Estufa
-                        </p>
-
-                        <p className="text-xs text-pink-200">
-                            ESP32 + MQTT
-                        </p>
-
-                    </div>
-
+                {/* RODAPÉ */}
+                <div className="mt-6 border-t border-white/20 pt-4">
+                    <p className="text-xs text-pink-100">
+                        Projeto Estufa
+                    </p>
+                    <p className="text-xs text-pink-200">
+                        ESP32 + MQTT
+                    </p>
                 </div>
-
-            </div>
-
+            </aside>
 
             {/* CONTEÚDO DAS PÁGINAS */}
-
-            <div className="flex-1 text-black w-full overflow-auto relative">
-
-                {/* BOTÃO MENU NO CELULAR */}
-
+            <main className="relative min-w-0 flex-1 text-black">
                 <button
+                    type="button"
+                    aria-label="Abrir menu"
+                    aria-controls="menu-lateral"
+                    aria-expanded={menuAberto}
                     onClick={() => setMenuAberto(true)}
-                    className="
-                        md:hidden
-                        fixed top-5 left-4
-                        z-50
-                        bg-pink-800
-                        text-white
-                        p-2
-                        rounded-xl
-                        shadow-lg
-                    "
+                    className="fixed left-4 top-5 z-50 rounded-xl bg-pink-800 p-2 text-white shadow-lg md:hidden"
                 >
-
-                    <MdMenu className="w-7 h-7" />
-
+                    <MdMenu className="h-7 w-7" />
                 </button>
 
-
                 <Routes>
-
-                    <Route
-                        path="/"
-                        element={<Inicial />}
-                    />
-
+                    <Route path="/" element={<Inicial />} />
                     <Route
                         path="/painelControle"
                         element={<PainelControle />}
                     />
-
+                    <Route
+                        path="/temperatura"
+                        element={<Temperatura />}
+                    />
+                    <Route path="/umidade" element={<Umidade />} />
+                    <Route path="/chuva" element={<Chuva />} />
+                    <Route path="/movimento" element={<Movimento />} />
                 </Routes>
-
-            </div>
-
+            </main>
         </div>
     );
 }
