@@ -10,7 +10,7 @@ import {
   LuActivity,
 } from "react-icons/lu";
 
-const enderecoApi = "https://webcontroleapi.vercel.app/";
+const enderecoApi = "https://projeto-estufa-api.vercel.app/";
 const enderecoWokwi = "https://wokwi.com/projects/473531629478178817";
 
 export default function Inicial() {
