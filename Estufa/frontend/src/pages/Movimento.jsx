@@ -8,7 +8,8 @@ import {
 } from "react-icons/lu";
 import { HiOutlineUser } from "react-icons/hi2";
 
-const enderecoServidor = "https://webcontroleapi.vercel.app";
+//Endereço do Servidor
+const enderecoServidor = "http://localhost:3001";
 
 function interpretarPresenca(valor) {
     if (valor === true || valor === 1) return true;

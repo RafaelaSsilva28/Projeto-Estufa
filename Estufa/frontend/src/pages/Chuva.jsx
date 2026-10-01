@@ -10,7 +10,8 @@ import {
 } from "react-icons/lu";
 import { GiGreenhouse } from "react-icons/gi";
 
-const enderecoServidor = "https://webcontroleapi.vercel.app";
+//Endereço do Servidor
+const enderecoServidor = "http://localhost:3001";
 
 export default function Chuva() {
     const [dados, setDados] = useState(null);

@@ -7,7 +7,8 @@ import {
     LuClock,
 } from "react-icons/lu";
 
-const enderecoServidor = "https://webcontroleapi.vercel.app";
+//Endereço do Servidor
+const enderecoServidor = "http://localhost:3001";
 
 export default function Temperatura() {
     const [temperatura, setTemperatura] = useState(null);
