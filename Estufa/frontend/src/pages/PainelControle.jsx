@@ -13,6 +13,8 @@ import {
   GiGreenhouse
 } from "react-icons/gi";
 
+//Endereço do Servidor
+const enderecoServidor = "http://localhost:3001";
 
 export default function PainelControle() {
 
@@ -181,10 +183,6 @@ export default function PainelControle() {
               {presencaDetectada}
             </h3>
 
-            <p className="text-sm text-pink-700 mt-3">
-              Movimento:
-            </p>
-
           </div>
 
 
@@ -215,10 +213,6 @@ export default function PainelControle() {
               {umidade}
             </h3>
 
-            <p className="text-sm text-gray-500 mt-3">
-              Ambiente:
-            </p>
-
           </div>
 
 
@@ -248,11 +242,6 @@ export default function PainelControle() {
             <h3 className="text-3xl font-bold text-pink-950 mt-1">
               {temperatura}
             </h3>
-
-            <p className="text-sm text-gray-500 mt-3">
-              Temperatura:
-            </p>
-
           </div>
 
 
@@ -282,10 +271,6 @@ export default function PainelControle() {
             <h3 className="text-2xl font-bold text-pink-950 mt-1">
               {statusChuva}
             </h3>
-
-            <p className="text-sm text-gray-500 mt-3">
-              Telhado: {estadoTelhado}
-            </p>
 
           </div>
 
