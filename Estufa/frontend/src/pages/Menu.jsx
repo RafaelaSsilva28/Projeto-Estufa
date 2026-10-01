@@ -179,6 +179,11 @@ export default function Menu() {
                     />
 
                     <Route
+                        path="/graficos"
+                        element={<Graficos />}
+                    />
+
+                    <Route
                         path="/temperatura"
                         element={<Temperatura />}
                     />
@@ -198,15 +203,14 @@ export default function Menu() {
                         element={<Movimento />}
                     />
 
+                    
+
                     <Route
                         path="/historico"
                         element={<Historico />}
                     />
 
-                    <Route
-                        path="/graficos"
-                        element={<Graficos />}
-                    />
+            
                 </Routes>
             </main>
         </div>
