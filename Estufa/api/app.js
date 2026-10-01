@@ -5,7 +5,7 @@ import cors from "cors";
 import rotaControleUmidade from "./routes/rotaControleUmidade.js";
 import rotaControleChuva from "./routes/rotaControleChuva.js";
 import rotaMovimento from "./routes/rotaMovimento.js";
-import rotaAcesso from "./routes/rotaAcesso.js";
+import rotaAcesso from "./routes/rotaControleAcesso.js";
 import rotaHistorico from "./routes/rotaHistorico.js";
 
 const app = express();
