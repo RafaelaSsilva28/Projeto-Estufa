@@ -1,148 +1,277 @@
 <div align="center">
 
-# 🌱 Estufa Inteligente
+# 🌷 Estufa Inteligente
+### Monitoramento ambiental • Automação • Identificação por RFID
 
-### Tecnologia para acompanhar e cuidar do ambiente de cultivo
+Uma maquete conectada que integra sensores, controle da cobertura  
+e uma interface web para acompanhar as condições da estufa.
 
-Monitoramento de sensores e controle da cobertura com  
-**ESP32 · MQTT · Node.js · React**
+<br>
 
-![Status](https://img.shields.io/badge/Status-Em_desenvolvimento-db2777?style=for-the-badge)
-![ESP32](https://img.shields.io/badge/Hardware-ESP32-7e22ce?style=for-the-badge)
-![React](https://img.shields.io/badge/Frontend-React-0891b2?style=for-the-badge)
-![Node.js](https://img.shields.io/badge/API-Node.js-15803d?style=for-the-badge)
+![ESP32](https://img.shields.io/badge/ESP32-Controle_embarcado-831843?style=for-the-badge)
+![MQTT](https://img.shields.io/badge/MQTT-Comunicação-a855f7?style=for-the-badge)
+![Node.js](https://img.shields.io/badge/Node.js-API-db2777?style=for-the-badge)
+![React](https://img.shields.io/badge/React-Interface_web-9333ea?style=for-the-badge)
+
+<br>
+
+**🌡️ Temperatura &nbsp; • &nbsp; 💧 Umidade &nbsp; • &nbsp; 🌧️ Chuva**  
+**🚶 Presença &nbsp; • &nbsp; 🪪 RFID &nbsp; • &nbsp; 🏠 Cobertura automática**
 
 </div>
 
 ---
 
-## 📖 Sobre o projeto
+## 🌿 Conheça o projeto
 
-A **Estufa Inteligente** é um projeto que integra uma maquete física a uma aplicação web para acompanhar as condições do ambiente de cultivo.
+A **Estufa Inteligente** reúne eletrônica e desenvolvimento de sistemas em uma maquete de estufa com cobertura móvel.
 
-Sensores conectados ao **ESP32** coletam informações de temperatura, umidade do ar, chuva e movimento. Os dados são enviados por **MQTT**, recebidos por uma **API em Node.js** e apresentados em uma interface desenvolvida em **React**.
+O **ESP32** realiza a leitura dos sensores, controla o servo motor, atualiza os displays e publica informações por **MQTT**. A proposta de integração utiliza uma **API em Node.js** e um **frontend em React** para apresentar os dados em um painel de monitoramento.
 
-O projeto também utiliza um **servo motor para movimentar a cobertura da estufa**, permitindo demonstrar o controle automático a partir das leituras dos sensores.
+O sistema também identifica cartões **RFID** e apresenta no **OLED** um símbolo indicando se o cartão foi permitido ou negado.
 
-> 🌿 **Objetivo:** visualizar as condições da estufa e compreender como sensores, automação e desenvolvimento web podem trabalhar juntos.
-
----
-
-## ✨ Funcionalidades
-
-| Recurso | Descrição |
-|:--|:--|
-| 🌡️ **Temperatura** | Acompanhamento da temperatura do ambiente. |
-| 💧 **Umidade do ar** | Exibição da umidade medida pelo sensor DHT. |
-| 🌧️ **Chuva** | Identificação da presença de água no sensor de chuva. |
-| 🚶 **Movimento** | Indicação de presença detectada pelo sensor PIR. |
-| 🏠 **Cobertura** | Movimentação por servo motor e acompanhamento do estado aberto ou fechado. |
-| 📡 **Comunicação MQTT** | Envio das informações do ESP32 para o sistema. |
-| 🖥️ **Painel web** | Visualização das informações em uma interface responsiva. |
+> 🌷 **Objetivo do projeto**  
+> Demonstrar a integração entre sensores, automação, comunicação e interface web, permitindo acompanhar as condições da estufa e o funcionamento dos componentes.
 
 ---
 
-## 🔄 Como funciona
+## ✨ Recursos do sistema
+
+| | Recurso | Funcionamento |
+|:--:|:--|:--|
+| 🌡️ | **Temperatura** | Leitura da temperatura ambiente pelo DHT. |
+| 💧 | **Umidade do ar** | Leitura da umidade relativa do ambiente pelo DHT. |
+| 🌧️ | **Detecção de chuva** | Leitura analógica e classificação conforme o limite configurado. |
+| 🚶 | **Detecção de presença** | Identificação de movimento pelo sensor PIR. |
+| 🪪 | **Identificação RFID** | Comparação do UID do cartão com o UID autorizado. |
+| 🏠 | **Cobertura móvel** | Movimentação do telhado por servo motor. |
+| 📟 | **LCD 16×2** | Exibição da umidade do ar e do estado do telhado. |
+| 🖥️ | **OLED** | Exibição de ✓ para acesso permitido e X para acesso negado. |
+| 📡 | **MQTT** | Publicação das leituras e dos estados do sistema. |
+
+---
+
+## 🔄 Integração do projeto
 
 ```mermaid
 flowchart TD
-    A["Sensores da estufa"] --> B["ESP32"]
+    A["DHT · Chuva · PIR · RFID"] --> B["ESP32"]
     B --> C["Broker MQTT"]
     C --> D["API Node.js"]
-    D --> E["Frontend React"]
-    B --> F["Servo da cobertura"]
+    D --> E["Interface React"]
+    B --> F["Servo motor"]
+    B --> G["LCD e OLED"]
 ```
 
-1. Os **sensores** coletam as informações do ambiente.
-2. O **ESP32** processa as leituras e controla o servo conforme a lógica programada.
-3. O **broker MQTT** recebe as mensagens publicadas pelo ESP32.
-4. A **API** recebe os dados para disponibilizá-los à aplicação web.
-5. O **frontend** apresenta as informações no painel e nas páginas de cada sensor.
+### Do circuito à tela
+
+1. Os sensores e o leitor RFID fornecem informações ao **ESP32**.
+2. O programa processa as leituras e atualiza os atuadores e displays.
+3. As informações são publicadas nos **tópicos MQTT**.
+4. A API e a aplicação web compõem a integração para visualização dos dados.
 
 ---
 
-## 🛠️ Tecnologias utilizadas
+## 🌸 Sensores e componentes
 
-### Hardware e programação embarcada
+### 🌡️ DHT — temperatura e umidade
 
-- **ESP32** — leitura dos sensores e comunicação com a rede.
-- **Arduino IDE e C++** — desenvolvimento do código embarcado.
-- **DHT11** — leitura de temperatura e umidade do ar no circuito físico.
-- **Sensor de chuva** — identificação de água na superfície do sensor.
-- **Sensor PIR** — detecção de movimento.
-- **Servo motor** — movimentação da cobertura.
-- **LCD 16×2 I2C** — apresentação de informações no circuito.
+Responsável por medir a **temperatura** e a **umidade do ar**.
 
-### Comunicação e backend
+- O código enviado está configurado para **DHT22**.
+- Para o circuito físico com **DHT11**, o modelo deve ser alterado no programa.
+- As leituras são realizadas em intervalos de **2 segundos**.
+- Leituras inválidas geram uma mensagem no Monitor Serial.
+- Valores diferentes da leitura anterior são publicados por MQTT.
 
-- **MQTT** — troca de mensagens entre o dispositivo e o sistema.
-- **HiveMQ Cloud** — broker utilizado na comunicação.
-- **Node.js** — execução da API.
+### 🌧️ Sensor de chuva — controle da cobertura
 
-### Interface web
+O ESP32 realiza uma leitura analógica e compara o resultado com o limite **2000**.
 
-- **React** — construção das páginas.
-- **React Router** — navegação entre as telas.
-- **Tailwind CSS** — estilização e responsividade.
-- **React Icons** — ícones da interface.
+| Condição no código atual | Classificação | Cobertura | Servo |
+|:--|:--|:--|:--|
+| Leitura maior ou igual a `2000` | Chuvoso | Aberta | `180°` |
+| Leitura menor que `2000` | Sem chuva | Fechada | `0°` |
+
+> Essa é a lógica implementada no código enviado. O limite e o sentido da leitura devem ser conferidos nos testes com o sensor físico.
+
+### 🚶 PIR — detecção de presença
+
+O sensor informa se há movimento detectado.
+
+- **HIGH:** publica `Presenca detectada`.
+- **LOW:** publica `Sem presenca`.
+- A publicação acontece quando o estado muda.
+
+### 🪪 RFID — identificação de cartões
+
+O leitor **MFRC522** identifica o UID do cartão apresentado e compara com o UID autorizado.
+
+| Resultado | OLED | Mensagem MQTT |
+|:--|:--:|:--|
+| UID autorizado | ✓ | `Permitido` |
+| UID diferente | X | `Negado` |
+
+O símbolo permanece no OLED por **2 segundos**. Em seguida, a tela é limpa.
+
+A identificação indica o resultado da leitura; o código atual não aciona uma fechadura.
 
 ---
 
-## 🖥️ Páginas da aplicação
+## 📟 Informações no circuito
 
-| Página | Finalidade |
+<table>
+<tr>
+<th>LCD 16×2 I2C</th>
+<th>OLED SSD1306</th>
+</tr>
+<tr>
+<td>
+
+Exibe as informações da estufa:
+
+- Umidade do ar em porcentagem.
+- Estado do telhado: aberto ou fechado.
+
+Endereço I2C: <code>0x27</code>.
+
+</td>
+<td>
+
+Exibe o resultado da identificação RFID:
+
+- ✓ — acesso permitido.
+- X — acesso negado.
+
+Resolução: <strong>128 × 64</strong>.  
+Endereço I2C: <code>0x3C</code>.
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🔌 Pinagem do código enviado
+
+| Componente | Sinal | GPIO do ESP32 |
+|:--|:--|:--:|
+| DHT | Dados | `4` |
+| Sensor de chuva | Saída analógica | `34` |
+| Servo motor | Sinal de controle | `13` |
+| PIR | Saída digital | `15` |
+| LCD | SDA | `21` |
+| LCD | SCL | `22` |
+| OLED | SDA | `26` |
+| OLED | SCL | `27` |
+| RFID MFRC522 | SDA / SS | `5` |
+| RFID MFRC522 | RST | `17` |
+| RFID MFRC522 | SCK | `18` |
+| RFID MFRC522 | MISO | `19` |
+| RFID MFRC522 | MOSI | `23` |
+
+**LCD e OLED utilizam barramentos I2C separados nesta versão.**  
+No leitor RFID, o pino identificado como SDA é utilizado como seleção SPI — SS.
+
+---
+
+## 📡 Comunicação MQTT
+
+O programa utiliza **HiveMQ Cloud**, com conexão na porta **8883**.
+
+As mensagens são publicadas com a opção **retained**, permitindo que o broker mantenha a última mensagem de cada tópico.
+
+| Tópico | Conteúdo publicado |
 |:--|:--|
-| **Início** | Apresentação do projeto e acesso às funcionalidades. |
-| **Painel de Controle** | Visão geral das informações da estufa. |
-| **Temperatura** | Acompanhamento das leituras de temperatura. |
-| **Umidade do ar** | Visualização da umidade do ambiente. |
-| **Chuva** | Acompanhamento do sensor de chuva e da cobertura. |
-| **Movimento** | Exibição do estado de presença detectado pelo PIR. |
+| `aula/27/temperatura` | Temperatura com uma casa decimal. |
+| `aula/27/umidadeAr` | Umidade do ar com uma casa decimal. |
+| `aula/27/statusChuva` | `Chuvoso` ou `Sem chuva`. |
+| `aula/27/cobertura` | `Aberta` ou `Fechada`. |
+| `aula/27/presencaPir` | `Presenca detectada` ou `Sem presenca`. |
+| `aula/27/acessoRfid` | `Permitido` ou `Negado`. |
 
-A interface utiliza **tons de rosa**, ícones e um menu lateral com adaptação para dispositivos móveis.
+> As credenciais de conexão devem ser configuradas no ambiente de desenvolvimento e não incluídas neste README.
 
 ---
 
-## 📡 Tópicos MQTT
+## 💻 Interface web
 
-| Tópico | Informação |
+A aplicação utiliza **React**, navegação com **React Router**, estilização com **Tailwind CSS** e ícones do **React Icons**.
+
+A identidade visual combina **rosa e roxo**, com menu lateral e adaptação para telas menores.
+
+| Página | Descrição |
 |:--|:--|
-| `aula/27/temperatura` | Temperatura do ambiente. |
-| `aula/27/umidadeAr` | Umidade relativa do ar. |
-| `aula/27/statusChuva` | Estado do sensor de chuva. |
-| `aula/27/cobertura` | Estado da cobertura. |
-| `aula/27/presencaPir` | Presença detectada pelo sensor PIR. |
+| 🏡 **Início** | Apresentação do projeto. |
+| 📊 **Painel de Controle** | Visão geral do monitoramento. |
+| 🌡️ **Temperatura** | Acompanhamento da temperatura ambiente. |
+| 💧 **Umidade do ar** | Visualização da umidade relativa do ar. |
+| 🌧️ **Chuva** | Informações sobre chuva e cobertura. |
+| 🚶 **Movimento** | Indicação de presença detectada. |
 
 ---
 
-## 🧪 Testes e desenvolvimento
+## 🧰 Tecnologias e bibliotecas
 
-O desenvolvimento envolve testes individuais dos componentes e a integração entre hardware, comunicação e interface.
+| Área | Tecnologias |
+|:--|:--|
+| **Microcontrolador** | ESP32 |
+| **Programação embarcada** | C++ e Arduino IDE |
+| **Comunicação** | Wi-Fi e MQTT |
+| **Broker** | HiveMQ Cloud |
+| **Backend** | Node.js |
+| **Frontend** | React e React Router |
+| **Estilização** | Tailwind CSS e React Icons |
+| **Simulação** | Wokwi |
 
-- **Sensores:** conferência das leituras pelo Monitor Serial.
-- **Servo motor:** teste de movimentação e ajuste para a cobertura.
-- **LCD:** teste de comunicação I2C e exibição de mensagens.
-- **MQTT:** verificação da publicação e do recebimento dos dados.
-- **Aplicação web:** conferência das páginas, navegação e apresentação das informações.
+### Bibliotecas do circuito
 
-> 🚧 O projeto está em desenvolvimento. A integração completa deve ser validada com o circuito físico.
+- `ESP32Servo`
+- `DHT sensor library`
+- `Adafruit Unified Sensor`
+- `PubSubClient`
+- `LiquidCrystal_I2C`
+- `Adafruit GFX Library`
+- `Adafruit SSD1306`
+- `MFRC522`
+
+O código também utiliza `WiFi`, `WiFiClientSecure`, `Wire` e `SPI`, disponíveis no pacote de suporte do ESP32.
+
+---
+
+## 🧪 Preparação para os testes
+
+1. Configure a placa **ESP32 Dev Module** no Arduino IDE.
+2. Instale as bibliotecas utilizadas pelo programa.
+3. Confira a pinagem correspondente à versão do circuito.
+4. Selecione o modelo correto do DHT.
+5. Configure a rede Wi-Fi e os dados de conexão MQTT.
+6. Ajuste o UID autorizado para o cartão utilizado.
+7. Envie o programa para a placa.
+8. Abra o **Monitor Serial em 115200 baud**.
+
+A rede `Wokwi-GUEST` é utilizada na simulação. No circuito físico, configure a rede disponível no local.
 
 ---
 
 ## 👩‍💻 Equipe
 
-Desenvolvido por **Rafaela e Susany**.
+<div align="center">
 
-**Curso:** Análise e Desenvolvimento de Sistemas — SENAI  
-**Turma:** 3º B  
-**Professor:** Ricardo Dias
+### Rafaela & Susany
+
+**Análise e Desenvolvimento de Sistemas — SENAI**  
+Turma **3º B** · Professor **Ricardo Dias**
+
+</div>
 
 ---
 
 <div align="center">
 
-**🌱 Projeto Estufa Inteligente**
+### 🌷 Estufa Inteligente
+**Do sensor à interface, cada leitura conta uma parte do ambiente.**
 
-*Sensores, automação e desenvolvimento web aplicados ao cultivo.*
+Projeto educacional em desenvolvimento.
 
 </div>
