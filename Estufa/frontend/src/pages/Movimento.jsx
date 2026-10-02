@@ -9,7 +9,7 @@ import {
 import { HiOutlineUser } from "react-icons/hi2";
 
 //Endereço do Servidor
-const enderecoServidor = "https://projeto-estufa-frontend.vercel.app";
+const enderecoServidor = "https://projeto-estufa-api.vercel.app";
 
 function interpretarPresenca(valor) {
     if (valor === true || valor === 1) return true;

@@ -14,7 +14,7 @@ import {
 } from "react-icons/gi";
 
 //Endereço do Servidor
-const enderecoServidor = "https://projeto-estufa-frontend.vercel.app";
+const enderecoServidor = "https://projeto-estufa-api.vercel.app";
 
 export default function PainelControle() {
 

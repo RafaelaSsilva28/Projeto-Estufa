@@ -8,7 +8,7 @@ import {
 } from "react-icons/lu";
 
 //Endereço do Servidor
-const enderecoServidor = "https://projeto-estufa-frontend.vercel.app";
+const enderecoServidor = "https://projeto-estufa-api.vercel.app";
 
 export default function Temperatura() {
     const [temperatura, setTemperatura] = useState(null);
