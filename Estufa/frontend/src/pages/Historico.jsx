@@ -4,12 +4,16 @@ import {
     LuRefreshCw,
     LuFilter,
     LuDatabase,
+    LuChevronLeft,
+    LuChevronRight,
 } from "react-icons/lu";
 
 const API_URL = (
     import.meta.env.VITE_API_URL ||
     "https://projeto-estufa-api.vercel.app"
 ).replace(/\/+$/, "");
+
+const REGISTROS_POR_PAGINA = 10;
 
 const sensores = [
     { valor: "todos", nome: "Todos os sensores" },
@@ -107,6 +111,7 @@ export default function Historico() {
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
     const [atualizacao, setAtualizacao] = useState(0);
+    const [pagina, setPagina] = useState(1);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -115,8 +120,9 @@ export default function Historico() {
             setCarregando(true);
             setErro("");
             setRegistros([]);
+            setPagina(1);
 
-            // Temperatura e umidade estão na mesma tabela do banco.
+            // Temperatura e umidade estão na mesma tabela.
             const sensorAPI =
                 sensor === "temperatura" || sensor === "umidade"
                     ? "clima"
@@ -124,7 +130,7 @@ export default function Historico() {
 
             try {
                 const resposta = await fetch(
-                    `${API_URL}/historico?sensor=${sensorAPI}`,
+                    `${API_URL}/historico?sensor=${encodeURIComponent(sensorAPI)}`,
                     {
                         signal: controller.signal,
                         cache: "no-store",
@@ -168,6 +174,30 @@ export default function Historico() {
         (item) => item.valor === sensor,
     )?.nome;
 
+    const totalPaginas = Math.max(
+        1,
+        Math.ceil(registros.length / REGISTROS_POR_PAGINA),
+    );
+
+    const paginaAtual = Math.min(pagina, totalPaginas);
+    const inicio = (paginaAtual - 1) * REGISTROS_POR_PAGINA;
+    const fim = Math.min(
+        inicio + REGISTROS_POR_PAGINA,
+        registros.length,
+    );
+
+    const registrosDaPagina = registros.slice(inicio, fim);
+
+    function mudarFiltro(event) {
+        setSensor(event.target.value);
+        setPagina(1);
+    }
+
+    function atualizarHistorico() {
+        setPagina(1);
+        setAtualizacao((valor) => valor + 1);
+    }
+
     return (
         <div className="min-h-screen bg-linear-to-br from-pink-50 via-white to-rose-50 px-4 pb-10 pt-24 sm:px-8 md:pt-10">
             <div className="mx-auto max-w-6xl">
@@ -182,6 +212,7 @@ export default function Historico() {
                             <h1 className="text-2xl font-bold text-pink-900 sm:text-3xl">
                                 Histórico dos sensores
                             </h1>
+
                             <p className="mt-1 text-sm text-gray-600">
                                 Consulte as leituras salvas da sua estufa.
                             </p>
@@ -191,7 +222,7 @@ export default function Historico() {
                     <button
                         type="button"
                         disabled={carregando}
-                        onClick={() => setAtualizacao((valor) => valor + 1)}
+                        onClick={atualizarHistorico}
                         className="flex items-center gap-2 rounded-xl bg-pink-800 px-5 py-3 font-semibold text-white shadow-sm transition-colors hover:bg-pink-900 disabled:cursor-wait disabled:opacity-60"
                     >
                         <LuRefreshCw
@@ -199,6 +230,7 @@ export default function Historico() {
                                 carregando ? "animate-spin" : ""
                             }`}
                         />
+
                         {carregando ? "Carregando..." : "Atualizar"}
                     </button>
                 </div>
@@ -216,7 +248,7 @@ export default function Historico() {
                     <select
                         id="filtro-sensor"
                         value={sensor}
-                        onChange={(event) => setSensor(event.target.value)}
+                        onChange={mudarFiltro}
                         className="w-full rounded-xl border border-pink-200 bg-pink-50/50 px-4 py-3 text-gray-800 outline-none focus:border-pink-600 focus:ring-2 focus:ring-pink-100 sm:max-w-sm"
                     >
                         {sensores.map((item) => (
@@ -227,13 +259,15 @@ export default function Historico() {
                     </select>
 
                     <p className="mt-3 text-sm text-gray-500">
-                        Exibe até 200 registros mais recentes do filtro
-                        selecionado.
+                        Exibe 10 registros por página do filtro selecionado.
                     </p>
                 </div>
 
                 {/* Histórico */}
-                <section className="overflow-hidden rounded-2xl border border-pink-100 bg-white shadow-sm">
+                <section
+                    aria-busy={carregando}
+                    className="overflow-hidden rounded-2xl border border-pink-100 bg-white shadow-sm"
+                >
                     <div className="flex flex-wrap items-center justify-between gap-3 border-b border-pink-100 px-5 py-4">
                         <h2 className="font-semibold text-pink-900">
                             {nomeFiltro}
@@ -263,7 +297,9 @@ export default function Historico() {
                             <p className="font-semibold">
                                 Não conseguimos carregar os registros.
                             </p>
+
                             <p className="mt-1 text-sm">{erro}</p>
+
                             <p className="mt-2 text-sm">
                                 Use o botão Atualizar para tentar novamente.
                             </p>
@@ -273,9 +309,11 @@ export default function Historico() {
                     {!carregando && !erro && registros.length === 0 && (
                         <div className="flex flex-col items-center px-5 py-14 text-center">
                             <LuDatabase className="mb-4 h-12 w-12 text-pink-300" />
+
                             <h3 className="font-semibold text-gray-700">
                                 Nenhum registro encontrado
                             </h3>
+
                             <p className="mt-2 max-w-md text-sm text-gray-500">
                                 Ainda não existem leituras salvas para esse
                                 filtro.
@@ -284,67 +322,137 @@ export default function Historico() {
                     )}
 
                     {!carregando && !erro && registros.length > 0 && (
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left text-sm">
-                                <caption className="sr-only">
-                                    Histórico de leituras: {nomeFiltro}
-                                </caption>
+                        <>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left text-sm">
+                                    <caption className="sr-only">
+                                        Histórico de leituras: {nomeFiltro}.
+                                        Página {paginaAtual} de {totalPaginas}.
+                                    </caption>
 
-                                <thead className="bg-pink-50 text-pink-900">
-                                    <tr>
-                                        <th scope="col" className="px-5 py-4">
-                                            Sensor
-                                        </th>
-                                        <th scope="col" className="px-5 py-4">
-                                            Leitura
-                                        </th>
-                                        <th scope="col" className="px-5 py-4">
-                                            Data e hora
-                                        </th>
-                                    </tr>
-                                </thead>
+                                    <thead className="bg-pink-50 text-pink-900">
+                                        <tr>
+                                            <th
+                                                scope="col"
+                                                className="px-5 py-4"
+                                            >
+                                                Sensor
+                                            </th>
 
-                                <tbody className="divide-y divide-pink-50">
-                                    {registros.map((registro) => (
-                                        <tr
-                                            key={`${registro.sensor}-${registro.id}`}
-                                            className="transition-colors hover:bg-pink-50/60"
-                                        >
-                                            <td className="whitespace-nowrap px-5 py-4">
-                                                <span className="inline-block rounded-lg bg-pink-100 px-3 py-1 font-medium text-pink-800">
-                                                    {registro.sensor === "clima" &&
-                                                    sensor !== "todos"
-                                                        ? nomeFiltro
-                                                        : nomesSensores[
-                                                              registro.sensor
-                                                          ] || registro.sensor}
-                                                </span>
-                                            </td>
+                                            <th
+                                                scope="col"
+                                                className="px-5 py-4"
+                                            >
+                                                Leitura
+                                            </th>
 
-                                            <td className="min-w-64 px-5 py-4 text-gray-700">
-                                                {descreverLeitura(
-                                                    registro,
-                                                    sensor,
-                                                )}
-                                            </td>
-
-                                            <td className="whitespace-nowrap px-5 py-4 text-gray-500">
-                                                {formatarData(
-                                                    registro.data_hora,
-                                                )}
-                                            </td>
+                                            <th
+                                                scope="col"
+                                                className="px-5 py-4"
+                                            >
+                                                Data e hora
+                                            </th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+
+                                    <tbody className="divide-y divide-pink-50">
+                                        {registrosDaPagina.map((registro) => (
+                                            <tr
+                                                key={`${registro.sensor}-${registro.id}`}
+                                                className="transition-colors hover:bg-pink-50/60"
+                                            >
+                                                <td className="whitespace-nowrap px-5 py-4">
+                                                    <span className="inline-block rounded-lg bg-pink-100 px-3 py-1 font-medium text-pink-800">
+                                                        {registro.sensor ===
+                                                            "clima" &&
+                                                        sensor !== "todos"
+                                                            ? nomeFiltro
+                                                            : nomesSensores[
+                                                                  registro.sensor
+                                                              ] ||
+                                                              registro.sensor}
+                                                    </span>
+                                                </td>
+
+                                                <td className="min-w-64 px-5 py-4 text-gray-700">
+                                                    {descreverLeitura(
+                                                        registro,
+                                                        sensor,
+                                                    )}
+                                                </td>
+
+                                                <td className="whitespace-nowrap px-5 py-4 text-gray-500">
+                                                    {formatarData(
+                                                        registro.data_hora,
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Paginação */}
+                            <nav
+                                aria-label="Paginação do histórico"
+                                className="flex flex-wrap items-center justify-between gap-4 border-t border-pink-100 bg-pink-50/40 px-5 py-4"
+                            >
+                                <p
+                                    className="text-sm text-gray-500"
+                                    aria-live="polite"
+                                    aria-atomic="true"
+                                >
+                                    Mostrando{" "}
+                                    <span className="font-semibold text-pink-800">
+                                        {inicio + 1} a {fim}
+                                    </span>{" "}
+                                    de {registros.length} registros
+                                </p>
+
+                                <div className="flex flex-wrap items-center gap-3">
+                                    <button
+                                        type="button"
+                                        disabled={paginaAtual === 1}
+                                        onClick={() =>
+                                            setPagina(paginaAtual - 1)
+                                        }
+                                        className="inline-flex items-center gap-1 rounded-xl border border-pink-200 bg-white px-3 py-2 text-sm font-semibold text-pink-800 transition-colors hover:bg-pink-100 disabled:cursor-not-allowed disabled:opacity-40"
+                                    >
+                                        <LuChevronLeft
+                                            className="h-4 w-4"
+                                            aria-hidden="true"
+                                        />
+                                        Anterior
+                                    </button>
+
+                                    <span className="text-sm font-medium text-pink-900">
+                                        Página {paginaAtual} de {totalPaginas}
+                                    </span>
+
+                                    <button
+                                        type="button"
+                                        disabled={
+                                            paginaAtual === totalPaginas
+                                        }
+                                        onClick={() =>
+                                            setPagina(paginaAtual + 1)
+                                        }
+                                        className="inline-flex items-center gap-1 rounded-xl bg-pink-800 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-pink-900 disabled:cursor-not-allowed disabled:opacity-40"
+                                    >
+                                        Próxima
+                                        <LuChevronRight
+                                            className="h-4 w-4"
+                                            aria-hidden="true"
+                                        />
+                                    </button>
+                                </div>
+                            </nav>
+                        </>
                     )}
                 </section>
 
                 <p className="mt-4 text-sm text-gray-500">
-                    O histórico mostra os registros salvos no banco. Na
-                    implementação atual, as leituras dos sensores são
-                    gravadas quando suas rotas de consulta são acessadas.
+                    O histórico mostra os registros salvos no banco.
                 </p>
             </div>
         </div>
