@@ -56,112 +56,121 @@ O sistema também identifica cartões **RFID** e apresenta no **OLED** um símbo
 
 ## 🔗 Integração do projeto
 
-A Estufa Inteligente conecta três partes principais: **simulação do circuito, processamento das informações e interface de monitoramento**.
+A Estufa Inteligente reúne três etapas que trabalham em conjunto: **monitoramento e automação, comunicação de dados e visualização web**.
 
 <div align="center">
 
-### 🌷 Explore o projeto
+### 🌷 Conheça e explore o projeto
 
 <a href="https://wokwi.com/projects/473531629478178817">
-  <img src="https://img.shields.io/badge/🔌_ABRIR_SIMULAÇÃO_WOKWI-9333EA?style=for-the-badge&logoColor=white" />
+  <img src="https://img.shields.io/badge/🔌_SIMULAÇÃO_DO_CIRCUITO-9333EA?style=for-the-badge&logoColor=white" />
 </a>
 
+&nbsp;
+
 <a href="https://projeto-estufa-frontend.vercel.app/">
-  <img src="https://img.shields.io/badge/🌐_ACESSAR_SITE-DB2777?style=for-the-badge&logo=vercel&logoColor=white" />
+  <img src="https://img.shields.io/badge/🌐_APLICAÇÃO_WEB-D946A5?style=for-the-badge&logo=vercel&logoColor=white" />
 </a>
 
 <br/>
 
-<sub>Simule o circuito e conheça a interface web do projeto.</sub>
+<sub>Explore a simulação do circuito e acesse a interface web da Estufa Inteligente.</sub>
 
 </div>
 
-### 🧩 Como as partes se conectam
+### 🧭 Arquitetura do sistema
 
 ```mermaid
 flowchart TB
-    subgraph CIRCUITO["🌱 01 · MONITORAMENTO E AUTOMAÇÃO"]
-        direction LR
-        A["🌡️ DHT"]
-        B["🌧️ Chuva"]
-        C["🚶 PIR"]
-        D["🪪 RFID"]
-        A --> ESP["ESP32"]
-        B --> ESP
-        C --> ESP
-        D --> ESP
-        ESP --> SERVO["🏠 Servo motor"]
-        ESP --> DISPLAY["📟 LCD / OLED"]
+    subgraph A["01 · MONITORAMENTO E AUTOMAÇÃO"]
+        direction TB
+        S["Sensores<br/>DHT · Chuva · PIR · RFID"]
+        ESP["ESP32"]
+        ACT["Servo motor · LCD · OLED"]
+        S --> ESP
+        ESP --> ACT
     end
 
-    subgraph COMUNICACAO["📡 02 · COMUNICAÇÃO"]
+    subgraph B["02 · COMUNICAÇÃO"]
         direction LR
         MQTT["MQTT"]
-        BROKER["☁️ HiveMQ Cloud"]
-        MQTT --> BROKER
+        HIVE["HiveMQ Cloud"]
+        MQTT --> HIVE
     end
 
-    subgraph APLICACAO["💻 03 · APLICAÇÃO"]
+    subgraph C["03 · APLICAÇÃO WEB"]
         direction LR
-        API["⚙️ Backend Node.js"]
-        WEB["🌷 Frontend React"]
-        API --> WEB
+        API["Backend<br/>Node.js"]
+        REACT["Frontend<br/>React"]
+        API --> REACT
     end
 
     ESP --> MQTT
-    BROKER --> API
+    HIVE --> API
 
-    style CIRCUITO fill:#FCE7F3,stroke:#DB2777,color:#831843
-    style COMUNICACAO fill:#F3E8FF,stroke:#9333EA,color:#581C87
-    style APLICACAO fill:#FCE7F3,stroke:#D946A5,color:#831843
-    style ESP fill:#9333EA,color:#FFFFFF,stroke:#581C87
-    style BROKER fill:#A855F7,color:#FFFFFF,stroke:#6B21A8
-    style WEB fill:#DB2777,color:#FFFFFF,stroke:#9D174D
+    style A fill:#FDF2F8,stroke:#DB2777,color:#831843
+    style B fill:#F5F3FF,stroke:#9333EA,color:#581C87
+    style C fill:#FDF2F8,stroke:#D946A5,color:#831843
+    style ESP fill:#9333EA,color:#FFFFFF,stroke:#6B21A8
+    style HIVE fill:#A855F7,color:#FFFFFF,stroke:#7E22CE
+    style REACT fill:#DB2777,color:#FFFFFF,stroke:#9D174D
 ```
 
-### ⚙️ Etapas de funcionamento
+### ⚙️ Etapas da integração
 
 <table>
 <tr>
-<td align="center" width="50%">
-<h3>01 · 🌡️ Coleta</h3>
-Os sensores identificam as condições do ambiente, como temperatura, umidade, chuva e presença.
+<td width="33%" align="center">
+
+### 🌱 01
+
+**CIRCUITO**
+
+<img src="https://img.shields.io/badge/ESP32-Sensores-9333EA?style=flat-square" />
+
+Leitura dos sensores, identificação RFID e controle automático dos componentes.
+
 </td>
-<td align="center" width="50%">
-<h3>02 · 🧠 Processamento</h3>
-O ESP32 interpreta as informações e executa as ações programadas.
+<td width="33%" align="center">
+
+### 📡 02
+
+**COMUNICAÇÃO**
+
+<img src="https://img.shields.io/badge/MQTT-HiveMQ-A855F7?style=flat-square" />
+
+Envio das informações por tópicos MQTT para a estrutura de integração.
+
 </td>
-</tr>
-<tr>
-<td align="center" width="50%">
-<h3>03 · 🏠 Automação</h3>
-O servo motor movimenta a cobertura e os displays apresentam os estados do sistema.
-</td>
-<td align="center" width="50%">
-<h3>04 · 📡 Comunicação</h3>
-As informações são publicadas nos tópicos MQTT para comunicação entre os componentes.
-</td>
-</tr>
-<tr>
-<td align="center" width="50%">
-<h3>05 · ⚙️ Integração</h3>
-A estrutura de backend organiza as informações recebidas para disponibilizá-las à aplicação.
-</td>
-<td align="center" width="50%">
-<h3>06 · 💻 Visualização</h3>
-A interface web apresenta os dados do monitoramento em páginas próprias.
+<td width="33%" align="center">
+
+### 💻 03
+
+**APLICAÇÃO**
+
+<img src="https://img.shields.io/badge/React-Interface-D946A5?style=flat-square" />
+
+Organização e apresentação das informações em uma interface web.
+
 </td>
 </tr>
 </table>
 
-### 🖥️ Ambientes do projeto
+### 🔄 Funcionamento
+
+1. **Coleta:** os sensores identificam as condições do ambiente.
+2. **Processamento:** o ESP32 interpreta as leituras e executa as ações programadas.
+3. **Automação:** o servo motor e os displays são atualizados.
+4. **Comunicação:** os dados são publicados nos tópicos MQTT.
+5. **Integração:** a estrutura de backend organiza as informações recebidas.
+6. **Visualização:** a interface web apresenta os dados do monitoramento.
 
 <div align="center">
 
-| <a href="https://wokwi.com/projects/473531629478178817">🔌 Simulação Wokwi</a> | <a href="https://projeto-estufa-frontend.vercel.app/">🌐 Aplicação Web</a> |
+| 🔌 Simulação do circuito | 🌐 Aplicação publicada |
 |:--:|:--:|
-| <img src="https://img.shields.io/badge/CIRCUITO-ESP32-9333EA?style=for-the-badge" /> | <img src="https://img.shields.io/badge/INTERFACE-REACT-DB2777?style=for-the-badge" /> |
-| Simulação dos componentes e conexões do circuito. | Interface web para acompanhar o projeto. |
+| **Wokwi** | **Estufa Inteligente** |
+| [Abrir projeto](https://wokwi.com/projects/473531629478178817) | [Visitar site](https://projeto-estufa-frontend.vercel.app/) |
 
 </div>
 
