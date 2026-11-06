@@ -1,21 +1,25 @@
-<div align="center">
+ <div align="center">
 
-# 🌷 Estufa Inteligente
-### Monitoramento ambiental • Automação • Identificação por RFID
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=230&color=0:581C87,35:9333EA,70:D946A5,100:F9A8D4&text=Estufa%20Inteligente&fontSize=48&fontColor=FFFFFF&fontAlignY=38&desc=Monitoramento%20ambiental%20%E2%80%A2%20Automa%C3%A7%C3%A3o%20%E2%80%A2%20RFID&descAlignY=60&descSize=15&animation=fadeIn&section=header" />
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Poppins&weight=500&size=18&duration=3000&pause=1000&color=D879C5&center=true&vCenter=true&width=650&lines=Tecnologia+conectada+%C3%A0+natureza;Sensores%2C+automa%C3%A7%C3%A3o+e+monitoramento;Uma+estufa+mais+inteligente!" />
+
+<br/>
 
 Uma maquete conectada que integra sensores, controle da cobertura  
 e uma interface web para acompanhar as condições da estufa.
 
-<br>
+<br/>
 
 ![ESP32](https://img.shields.io/badge/ESP32-Controle_embarcado-831843?style=for-the-badge)
 ![MQTT](https://img.shields.io/badge/MQTT-Comunicação-a855f7?style=for-the-badge)
 ![Node.js](https://img.shields.io/badge/Node.js-API-db2777?style=for-the-badge)
 ![React](https://img.shields.io/badge/React-Interface_web-9333ea?style=for-the-badge)
 
-<br>
+<br/>
 
-**🌡️ Temperatura &nbsp; • &nbsp; 💧 Umidade &nbsp; • &nbsp; 🌧️ Chuva**  
+**🌡️ Temperatura &nbsp; • &nbsp; 💧 Umidade &nbsp; • &nbsp; 🌧️ Chuva**
+
 **🚶 Presença &nbsp; • &nbsp; 🪪 RFID &nbsp; • &nbsp; 🏠 Cobertura automática**
 
 </div>
@@ -30,8 +34,7 @@ O **ESP32** realiza a leitura dos sensores, controla o servo motor, atualiza os 
 
 O sistema também identifica cartões **RFID** e apresenta no **OLED** um símbolo indicando se o cartão foi permitido ou negado.
 
-> 🌷 **Objetivo do projeto**  
-> Demonstrar a integração entre sensores, automação, comunicação e interface web, permitindo acompanhar as condições da estufa e o funcionamento dos componentes.
+> 🌷 **Objetivo do projeto:** demonstrar a integração entre sensores, automação, comunicação e interface web, permitindo acompanhar as condições da estufa e o funcionamento dos componentes.
 
 ---
 
@@ -51,24 +54,116 @@ O sistema também identifica cartões **RFID** e apresenta no **OLED** um símbo
 
 ---
 
-## 🔄 Integração do projeto
+## 🔗 Integração do projeto
+
+A Estufa Inteligente conecta três partes principais: **simulação do circuito, processamento das informações e interface de monitoramento**.
+
+<div align="center">
+
+### 🌷 Explore o projeto
+
+<a href="https://wokwi.com/projects/473531629478178817">
+  <img src="https://img.shields.io/badge/🔌_ABRIR_SIMULAÇÃO_WOKWI-9333EA?style=for-the-badge&logoColor=white" />
+</a>
+
+<a href="https://projeto-estufa-frontend.vercel.app/">
+  <img src="https://img.shields.io/badge/🌐_ACESSAR_SITE-DB2777?style=for-the-badge&logo=vercel&logoColor=white" />
+</a>
+
+<br/>
+
+<sub>Simule o circuito e conheça a interface web do projeto.</sub>
+
+</div>
+
+### 🧩 Como as partes se conectam
 
 ```mermaid
-flowchart TD
-    A["DHT · Chuva · PIR · RFID"] --> B["ESP32"]
-    B --> C["Broker MQTT"]
-    C --> D["API Node.js"]
-    D --> E["Interface React"]
-    B --> F["Servo motor"]
-    B --> G["LCD e OLED"]
+flowchart TB
+    subgraph CIRCUITO["🌱 01 · MONITORAMENTO E AUTOMAÇÃO"]
+        direction LR
+        A["🌡️ DHT"]
+        B["🌧️ Chuva"]
+        C["🚶 PIR"]
+        D["🪪 RFID"]
+        A --> ESP["ESP32"]
+        B --> ESP
+        C --> ESP
+        D --> ESP
+        ESP --> SERVO["🏠 Servo motor"]
+        ESP --> DISPLAY["📟 LCD / OLED"]
+    end
+
+    subgraph COMUNICACAO["📡 02 · COMUNICAÇÃO"]
+        direction LR
+        MQTT["MQTT"]
+        BROKER["☁️ HiveMQ Cloud"]
+        MQTT --> BROKER
+    end
+
+    subgraph APLICACAO["💻 03 · APLICAÇÃO"]
+        direction LR
+        API["⚙️ Backend Node.js"]
+        WEB["🌷 Frontend React"]
+        API --> WEB
+    end
+
+    ESP --> MQTT
+    BROKER --> API
+
+    style CIRCUITO fill:#FCE7F3,stroke:#DB2777,color:#831843
+    style COMUNICACAO fill:#F3E8FF,stroke:#9333EA,color:#581C87
+    style APLICACAO fill:#FCE7F3,stroke:#D946A5,color:#831843
+    style ESP fill:#9333EA,color:#FFFFFF,stroke:#581C87
+    style BROKER fill:#A855F7,color:#FFFFFF,stroke:#6B21A8
+    style WEB fill:#DB2777,color:#FFFFFF,stroke:#9D174D
 ```
 
-### Do circuito à tela
+### ⚙️ Etapas de funcionamento
 
-1. Os sensores e o leitor RFID fornecem informações ao **ESP32**.
-2. O programa processa as leituras e atualiza os atuadores e displays.
-3. As informações são publicadas nos **tópicos MQTT**.
-4. A API e a aplicação web compõem a integração para visualização dos dados.
+<table>
+<tr>
+<td align="center" width="50%">
+<h3>01 · 🌡️ Coleta</h3>
+Os sensores identificam as condições do ambiente, como temperatura, umidade, chuva e presença.
+</td>
+<td align="center" width="50%">
+<h3>02 · 🧠 Processamento</h3>
+O ESP32 interpreta as informações e executa as ações programadas.
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
+<h3>03 · 🏠 Automação</h3>
+O servo motor movimenta a cobertura e os displays apresentam os estados do sistema.
+</td>
+<td align="center" width="50%">
+<h3>04 · 📡 Comunicação</h3>
+As informações são publicadas nos tópicos MQTT para comunicação entre os componentes.
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
+<h3>05 · ⚙️ Integração</h3>
+A estrutura de backend organiza as informações recebidas para disponibilizá-las à aplicação.
+</td>
+<td align="center" width="50%">
+<h3>06 · 💻 Visualização</h3>
+A interface web apresenta os dados do monitoramento em páginas próprias.
+</td>
+</tr>
+</table>
+
+### 🖥️ Ambientes do projeto
+
+<div align="center">
+
+| <a href="https://wokwi.com/projects/473531629478178817">🔌 Simulação Wokwi</a> | <a href="https://projeto-estufa-frontend.vercel.app/">🌐 Aplicação Web</a> |
+|:--:|:--:|
+| <img src="https://img.shields.io/badge/CIRCUITO-ESP32-9333EA?style=for-the-badge" /> | <img src="https://img.shields.io/badge/INTERFACE-REACT-DB2777?style=for-the-badge" /> |
+| Simulação dos componentes e conexões do circuito. | Interface web para acompanhar o projeto. |
+
+</div>
 
 ---
 
@@ -120,35 +215,24 @@ A identificação indica o resultado da leitura; o código atual não aciona uma
 
 ## 📟 Informações no circuito
 
-<table>
-<tr>
-<th>LCD 16×2 I2C</th>
-<th>OLED SSD1306</th>
-</tr>
-<tr>
-<td>
+### LCD 16×2 I2C
 
 Exibe as informações da estufa:
 
 - Umidade do ar em porcentagem.
 - Estado do telhado: aberto ou fechado.
 
-Endereço I2C: <code>0x27</code>.
+Endereço I2C: `0x27`.
 
-</td>
-<td>
+### OLED SSD1306
 
 Exibe o resultado da identificação RFID:
 
 - ✓ — acesso permitido.
 - X — acesso negado.
 
-Resolução: <strong>128 × 64</strong>.  
-Endereço I2C: <code>0x3C</code>.
-
-</td>
-</tr>
-</table>
+Resolução: **128 × 64**.  
+Endereço I2C: `0x3C`.
 
 ---
 
@@ -199,6 +283,14 @@ As mensagens são publicadas com a opção **retained**, permitindo que o broker
 A aplicação utiliza **React**, navegação com **React Router**, estilização com **Tailwind CSS** e ícones do **React Icons**.
 
 A identidade visual combina **rosa e roxo**, com menu lateral e adaptação para telas menores.
+
+<div align="center">
+
+<a href="https://projeto-estufa-frontend.vercel.app/">
+  <img src="https://img.shields.io/badge/🌷_VISITAR_ESTUFA_INTELIGENTE-D946A5?style=for-the-badge&logo=vercel&logoColor=white" />
+</a>
+
+</div>
 
 | Página | Descrição |
 |:--|:--|
@@ -269,9 +361,22 @@ Turma **3º B** · Professor **Ricardo Dias**
 
 <div align="center">
 
+<img src="https://readme-typing-svg.herokuapp.com?font=Poppins&weight=500&size=20&duration=3000&pause=1000&color=D879C5&center=true&vCenter=true&width=550&lines=Tecnologia+que+conecta+e+transforma;Inovação+em+cada+detalhe!;Cultivando+ideias+com+tecnologia+%F0%9F%8C%B7" />
+
 ### 🌷 Estufa Inteligente
+
 **Do sensor à interface, cada leitura conta uma parte do ambiente.**
 
-Projeto educacional em desenvolvimento.
+Projeto educacional desenvolvido com tecnologia, criatividade e inovação.
+
+<br/>
+
+![ESP32](https://img.shields.io/badge/Powered%20by-ESP32-9333EA?style=flat-square)
+![React](https://img.shields.io/badge/Developed%20with-React-D946A5?style=flat-square)
+![MQTT](https://img.shields.io/badge/Connected%20by-MQTT-9333EA?style=flat-square)
+
+<br/>
+
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=150&color=0:581C87,35:9333EA,70:D946A5,100:F9A8D4&section=footer&animation=fadeIn" />
 
 </div>
